@@ -6,6 +6,7 @@ import { lanzarConfettiBienvenida } from './confetti-effect.js';
 // inicio (mismo timing que 0_Demo/demo.html).
 setTimeout(() => {
   document.querySelector('.welcome-card')?.classList.add('visible');
+  document.querySelector('.pop-boton')?.classList.add('visible');
   lanzarConfettiBienvenida();
 }, 500);
 

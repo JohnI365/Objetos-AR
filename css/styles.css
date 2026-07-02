@@ -70,6 +70,17 @@ html, body {
   transform: scale(1);
 }
 
+/* Envoltorio para animar la aparición del botón sin pisar el
+   transform:scale(0.98) de .boton-primario:active */
+.pop-boton {
+  transform: scale(0);
+  transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.pop-boton.visible {
+  transform: scale(1);
+}
+
 .welcome-emoji {
   font-size: 40px;
   margin-bottom: 8px;
