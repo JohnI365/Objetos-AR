@@ -46,13 +46,12 @@ export async function startFallbackExperience(container, onProgress) {
   dirLight.position.set(0.5, 1, 0.25);
   scene.add(dirLight);
 
-  const { scene: modelScene } = await loadModel(onProgress);
-  normalizeAndPlaceModel(modelScene, 1.0);
-  modelScene.position.set(0, -0.5, -2); // ~2 metros al frente
-  scene.add(modelScene);
+  // La solicitud de permiso de giroscopio (iOS 13+) arranca de inmediato,
+  // en paralelo con la descarga del modelo, para no perder tiempo.
+  const permisoPromise = solicitarPermisoGiroscopio();
+  const modelPromise = loadModel(onProgress);
 
-  // iOS 13+: pedir permiso explícito de giroscopio con el overlay ya probado
-  const permisoConcedido = await solicitarPermisoGiroscopio();
+  const permisoConcedido = await permisoPromise;
   const hayGiroscopioReal = permisoConcedido && (await detectDeviceOrientationAvailable());
 
   let controls;
@@ -64,6 +63,12 @@ export async function startFallbackExperience(container, onProgress) {
     controls.target.set(0, -0.5, -2);
     controls.enablePan = false;
   }
+
+  // El modelo solo aparece en escena una vez resuelto el permiso.
+  const { scene: modelScene } = await modelPromise;
+  normalizeAndPlaceModel(modelScene, 1.0);
+  modelScene.position.set(0, -0.5, -2); // ~2 metros al frente
+  scene.add(modelScene);
 
   renderer.setAnimationLoop(() => {
     controls.update();

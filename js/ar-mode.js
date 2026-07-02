@@ -35,23 +35,44 @@ export async function startArExperience(onProgress) {
   reticle.visible = false;
   scene.add(reticle);
 
-  const { scene: modelScene } = await loadModel(onProgress);
-  normalizeAndPlaceModel(modelScene, 0.5); // ~50cm, tamaño "objeto de mesa"
-  modelScene.visible = false;
-  scene.add(modelScene);
-
+  // El botón de ARButton se crea de inmediato: es el que dispara el permiso
+  // de cámara/sesión AR del navegador al tocarlo, en paralelo con la carga
+  // del modelo (que corre de fondo mientras el usuario concede el permiso).
   document.body.appendChild(
     ARButton.createButton(renderer, { requiredFeatures: ['hit-test'] })
   );
 
+  let modelScene = null;
+  let placementPendiente = null;
+  loadModel(onProgress).then((gltf) => {
+    modelScene = gltf.scene;
+    normalizeAndPlaceModel(modelScene, 0.5); // ~50cm, tamaño "objeto de mesa"
+    modelScene.visible = false;
+    scene.add(modelScene);
+
+    // El usuario pudo haber tocado para colocar el objeto antes de que
+    // terminara de cargar; aplicamos esa colocación pendiente ahora.
+    if (placementPendiente) {
+      modelScene.position.setFromMatrixPosition(placementPendiente);
+      modelScene.quaternion.setFromRotationMatrix(placementPendiente);
+      modelScene.visible = true;
+    }
+  });
+
   let placed = false;
   const controller = renderer.xr.getController(0);
   controller.addEventListener('select', () => {
-    if (!reticle.visible) return;
-    modelScene.position.setFromMatrixPosition(reticle.matrix);
-    modelScene.quaternion.setFromRotationMatrix(reticle.matrix);
-    modelScene.visible = true;
+    if (!reticle.visible || placed) return;
     placed = true;
+    if (modelScene) {
+      modelScene.position.setFromMatrixPosition(reticle.matrix);
+      modelScene.quaternion.setFromRotationMatrix(reticle.matrix);
+      modelScene.visible = true;
+    } else {
+      // El modelo aún no termina de cargar: recordamos la pose y lo
+      // colocamos apenas esté listo (ver arriba).
+      placementPendiente = reticle.matrix.clone();
+    }
   });
   scene.add(controller);
 
