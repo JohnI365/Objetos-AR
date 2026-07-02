@@ -1,5 +1,9 @@
 import { isArSupported, startArExperience } from './ar-mode.js';
 import { startFallbackExperience } from './fallback-mode.js';
+import { lanzarConfettiBienvenida } from './confetti-effect.js';
+
+// Confetti de bienvenida, apenas carga la pantalla de inicio.
+setTimeout(lanzarConfettiBienvenida, 500);
 
 const pantallaInicio = document.getElementById('pantalla-inicio');
 const overlayCargando = document.getElementById('overlay-cargando');

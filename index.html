@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Objeto 3D — Reinducción</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <!-- canvas-confetti para la animación de bienvenida -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <script type="importmap">
     {
       "imports": {
@@ -16,9 +18,14 @@
 </head>
 <body>
   <div id="pantalla-inicio" class="pantalla">
-    <h1>Objeto 3D — Reinducción</h1>
-    <p>Explora el modelo en realidad aumentada, directo desde tu navegador.</p>
-    <button id="boton-iniciar" class="boton-primario">Iniciar experiencia</button>
+    <div class="welcome-card">
+      <div class="welcome-emoji">🎉</div>
+      <div class="welcome-title">¡Bienvenido/a!</div>
+      <div class="welcome-divider"></div>
+      <div class="welcome-sub">Estás a punto de explorar<br>la historia de nuestra institución</div>
+      <div class="welcome-org">Fundación Cardiovascular de Colombia</div>
+    </div>
+    <button id="boton-iniciar" class="boton-primario">Iniciar</button>
     <div class="nota-dispositivo">Funciona en Chrome (Android) y Safari (iPhone) · sin instalar nada</div>
   </div>
 

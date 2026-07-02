@@ -51,6 +51,55 @@ html, body {
   max-width: 420px;
 }
 
+/* ---- Tarjeta de bienvenida (adaptado de 0_Demo/css/ui.css) ---- */
+.welcome-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radio);
+  padding: 26px 28px 22px;
+  max-width: 340px;
+  width: 100%;
+  margin-bottom: 28px;
+  backdrop-filter: blur(6px);
+}
+
+.welcome-emoji {
+  font-size: 40px;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+
+.welcome-title {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--color-texto);
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.welcome-divider {
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-acento), #7b5cff);
+  border-radius: 2px;
+  margin: 12px auto;
+}
+
+.welcome-sub {
+  font-size: 14px;
+  color: var(--color-texto-suave);
+  line-height: 1.5;
+}
+
+.welcome-org {
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffb84f;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 12px;
+}
+
 .boton-primario {
   display: inline-block;
   padding: 16px 32px;
