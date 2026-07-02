@@ -2,8 +2,12 @@ import { isArSupported, startArExperience } from './ar-mode.js';
 import { startFallbackExperience } from './fallback-mode.js';
 import { lanzarConfettiBienvenida } from './confetti-effect.js';
 
-// Confetti de bienvenida, apenas carga la pantalla de inicio.
-setTimeout(lanzarConfettiBienvenida, 500);
+// Efecto de aparición + confetti de bienvenida, apenas carga la pantalla de
+// inicio (mismo timing que 0_Demo/demo.html).
+setTimeout(() => {
+  document.querySelector('.welcome-card')?.classList.add('visible');
+  lanzarConfettiBienvenida();
+}, 500);
 
 const pantallaInicio = document.getElementById('pantalla-inicio');
 const overlayCargando = document.getElementById('overlay-cargando');

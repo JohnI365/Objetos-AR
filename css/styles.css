@@ -61,6 +61,13 @@ html, body {
   width: 100%;
   margin-bottom: 28px;
   backdrop-filter: blur(6px);
+  /* Efecto de aparición, igual a 0_Demo (#ui-welcome): entra con un "pop" */
+  transform: scale(0);
+  transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.welcome-card.visible {
+  transform: scale(1);
 }
 
 .welcome-emoji {
