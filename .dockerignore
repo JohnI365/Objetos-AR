@@ -1,0 +1,8 @@
+.git
+.github
+.claude
+node_modules/
+*.md
+assets/Max_FCV.glb
+assets/fcv.glb
+Arquiectura_Recomendada.png

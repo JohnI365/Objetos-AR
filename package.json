@@ -1,0 +1,15 @@
+{
+  "name": "objetos-ar-reinduccion",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MVP WebAR (Three.js + WebXR) para visor de objetos 3D - reinduccion corporativa",
+  "scripts": {
+    "compress": "gltf-transform optimize assets/Max_FCV.glb assets/optimized/Max_FCV.glb --compress draco --texture-compress webp --texture-size 1024 --simplify true --simplify-ratio 0.5 --simplify-error 0.001",
+    "inspect": "gltf-transform inspect assets/optimized/Max_FCV.glb",
+    "serve": "serve . -l 5500"
+  },
+  "devDependencies": {
+    "@gltf-transform/cli": "^4.4.1",
+    "serve": "^14.2.4"
+  }
+}

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Generador QR — Objeto 3D Reinducción</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+
+    .container {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+      padding: 32px;
+      max-width: 480px;
+      width: 100%;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .brand-logo {
+      font-size: 22px;
+      font-weight: 900;
+      color: #4f7cff;
+      letter-spacing: 3px;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: #888;
+      line-height: 1.4;
+    }
+
+    h1 {
+      font-size: 18px;
+      color: #1a1a1a;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #444;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    input[type="url"] {
+      width: 100%;
+      padding: 11px 14px;
+      font-size: 13px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      transition: border-color 0.2s;
+      color: #1a1a1a;
+    }
+
+    input[type="url"]:focus {
+      outline: none;
+      border-color: #4f7cff;
+    }
+
+    /* ─── Color pickers ─── */
+    .color-row {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .color-field {
+      flex: 1;
+    }
+
+    .color-field label { margin-bottom: 6px; }
+
+    .color-field input[type="color"] {
+      width: 100%;
+      height: 40px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 2px;
+      background: #fff;
+    }
+
+    /* ─── Size selector ─── */
+    .size-row {
+      margin-bottom: 24px;
+    }
+
+    .size-options {
+      display: flex;
+      gap: 8px;
+    }
+
+    .size-btn {
+      flex: 1;
+      padding: 8px 0;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      background: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      color: #666;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .size-btn.active {
+      border-color: #4f7cff;
+      color: #4f7cff;
+      background: #eef2ff;
+    }
+
+    /* ─── QR Preview ─── */
+    #qr-preview {
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      background: #fafafa;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      min-height: 160px;
+      align-items: center;
+    }
+
+    #qr-preview canvas,
+    #qr-preview img {
+      border-radius: 4px;
+    }
+
+    /* ─── Buttons ─── */
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+
+    .btn:active { transform: scale(0.97); }
+
+    .btn-download { background: #4f7cff; color: #fff; }
+    .btn-print    { background: #1a237e; color: #fff; }
+    .btn-copy     { background: #f0f0f0; color: #333; flex: 0 0 auto; padding: 13px 16px; }
+
+    /* ─── Notes ─── */
+    .note-box {
+      background: #fff8e1;
+      border-left: 4px solid #f9a825;
+      border-radius: 4px;
+      padding: 12px 14px;
+      font-size: 12px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .note-box strong { color: #f57f17; }
+
+    /* ─── Print styles ─── */
+    @media print {
+      body { background: #fff; padding: 0; }
+      .container { box-shadow: none; padding: 0; }
+      .no-print { display: none !important; }
+      #qr-preview {
+        background: #fff;
+        border: none;
+        padding: 0;
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <div class="brand">
+      <div class="brand-logo">AR</div>
+      <div class="brand-sub">Reinducción corporativa<br>Generador de Código QR — Objeto 3D</div>
+    </div>
+
+    <h1 class="no-print">Configurar QR</h1>
+    <p class="subtitle no-print">Genera el código QR que enlaza a la experiencia WebAR del objeto 3D. Descárgalo para imprimirlo o incluirlo en la señalética del evento.</p>
+
+    <!-- URL Input -->
+    <div class="no-print">
+      <label for="ar-url">URL de la experiencia AR:</label>
+      <input
+        type="url"
+        id="ar-url"
+        placeholder="https://TU-USUARIO.github.io/0_Objetos_AR/"
+        value="https://TU-USUARIO.github.io/0_Objetos_AR/">
+
+      <!-- Colors -->
+      <div class="color-row">
+        <div class="color-field">
+          <label for="color-dark">Color del QR:</label>
+          <input type="color" id="color-dark" value="#4f7cff">
+        </div>
+        <div class="color-field">
+          <label for="color-light">Fondo:</label>
+          <input type="color" id="color-light" value="#ffffff">
+        </div>
+      </div>
+
+      <!-- Size -->
+      <div class="size-row">
+        <label>Tamaño:</label>
+        <div class="size-options">
+          <button class="size-btn" data-size="200">Pequeño<br>200px</button>
+          <button class="size-btn active" data-size="350">Mediano<br>350px</button>
+          <button class="size-btn" data-size="512">Grande<br>512px</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- QR Preview -->
+    <div id="qr-preview"></div>
+
+    <!-- Action Buttons -->
+    <div class="btn-row no-print">
+      <button class="btn btn-download" id="btn-download">&#8659; Descargar PNG</button>
+      <button class="btn btn-print"    id="btn-print">&#128438; Imprimir</button>
+      <button class="btn btn-copy"     id="btn-copy" title="Copiar URL">&#128279;</button>
+    </div>
+
+    <!-- Notes -->
+    <div class="note-box no-print">
+      <strong>Nota:</strong><br>
+      Para señalética de mayor resolución (carteles/banners grandes), usa <code>scripts/generar_qr.py</code>, que produce un PNG en alta resolución apto para impresión.
+    </div>
+
+  </div>
+
+  <script>
+    var qrInstance = null;
+    var currentSize = 350;
+
+    var urlInput     = document.getElementById('ar-url');
+    var colorDarkEl  = document.getElementById('color-dark');
+    var colorLightEl = document.getElementById('color-light');
+    var preview      = document.getElementById('qr-preview');
+
+    // ── Generate QR ──────────────────────────────────────
+    function generate() {
+      preview.innerHTML = '';
+      var url = urlInput.value.trim() || 'https://TU-USUARIO.github.io/0_Objetos_AR/';
+      qrInstance = new QRCode(preview, {
+        text: url,
+        width:  currentSize,
+        height: currentSize,
+        colorDark:  colorDarkEl.value,
+        colorLight: colorLightEl.value,
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    }
+
+    // ── Download PNG ──────────────────────────────────────
+    document.getElementById('btn-download').addEventListener('click', function () {
+      var canvas = preview.querySelector('canvas');
+      if (!canvas) return;
+      var link = document.createElement('a');
+      link.download = 'QR-ObjetoAR-Reinduccion.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+
+    // ── Print ─────────────────────────────────────────────
+    document.getElementById('btn-print').addEventListener('click', function () {
+      window.print();
+    });
+
+    // ── Copy URL ──────────────────────────────────────────
+    document.getElementById('btn-copy').addEventListener('click', function () {
+      var url = urlInput.value.trim();
+      if (!url) return;
+      navigator.clipboard.writeText(url).then(function () {
+        var btn = document.getElementById('btn-copy');
+        btn.textContent = '✓';
+        setTimeout(function () { btn.innerHTML = '&#128279;'; }, 1500);
+      });
+    });
+
+    // ── Size selector ─────────────────────────────────────
+    document.querySelectorAll('.size-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        document.querySelectorAll('.size-btn').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        currentSize = parseInt(btn.dataset.size, 10);
+        generate();
+      });
+    });
+
+    // ── Re-generate on input changes ──────────────────────
+    urlInput.addEventListener('input', generate);
+    colorDarkEl.addEventListener('input', generate);
+    colorLightEl.addEventListener('input', generate);
+
+    // Initial generation
+    generate();
+  </script>
+</body>
+</html>

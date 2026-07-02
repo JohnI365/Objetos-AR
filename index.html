@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Objeto 3D — Reinducción</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.185.1/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.185.1/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div id="pantalla-inicio" class="pantalla">
+    <h1>Objeto 3D — Reinducción</h1>
+    <p>Explora el modelo en realidad aumentada, directo desde tu navegador.</p>
+    <button id="boton-iniciar" class="boton-primario">Iniciar experiencia</button>
+    <div class="nota-dispositivo">Funciona en Chrome (Android) y Safari (iPhone) · sin instalar nada</div>
+  </div>
+
+  <div id="overlay-cargando" class="overlay oculto">
+    <div class="spinner"></div>
+    <div id="texto-progreso">Cargando modelo 3D... 0%</div>
+  </div>
+
+  <div id="overlay-permiso-giroscopio" class="overlay-permiso-giroscopio">
+    <p>Para ver el objeto a tu alrededor, permite el acceso al giroscopio.</p>
+    <button id="boton-activar-giroscopio" class="boton-primario">Activar</button>
+  </div>
+
+  <div id="contenedor-escena-3d" class="oculto"></div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

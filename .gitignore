@@ -1,0 +1,13 @@
+# Modelos originales sin comprimir (pesan decenas de MB, no deben entrar a git)
+assets/Max_FCV.glb
+assets/fcv.glb
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code
+.claude/
